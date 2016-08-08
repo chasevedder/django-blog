@@ -18,7 +18,7 @@ def post_detail(request, post_id):
 
 def create_post(request):
     if not request.user.is_authenticated():
-        return redirect('website:index')
+        return redirect('website:login')
     else:
         form = PostForm(request.POST or None)
         if form.is_valid():
