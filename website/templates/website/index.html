@@ -1,0 +1,20 @@
+{% extends 'website/base.html' %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        {% for blog in blogs %}
+            <div class="post-preview">
+                <a href="#">
+                    <h2 class="post-title">
+                        {{ blog.title }} - {{ blog.author }}
+                    </h2>
+                    <h4 class="post-subtitle">
+                        {{ blog.content }}
+                    </h4>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
