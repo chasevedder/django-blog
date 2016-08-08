@@ -2,14 +2,14 @@
 
 {% block body %}
 <div class="container-fluid">
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div class="col-md-11">
         {% for blog in blogs %}
-            <div class="post-preview">
-                <a href="#">
-                    <h2 class="post-title">
+            <div class="post">
+                <a href="{% url 'website:post-detail' blog.pk %}">
+                    <h3>
                         {{ blog.title }} - {{ blog.author }}
-                    </h2>
-                    <h4 class="post-subtitle">
+                    </h3>
+                    <h4">
                         {{ blog.content }}
                     </h4>
                 </a>
