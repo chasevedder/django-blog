@@ -11,3 +11,5 @@ settings.py
 
 ;;directories to ignore
 .idea/
+
+blog/
