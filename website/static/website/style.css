@@ -1,12 +1,9 @@
-.post {
-    display: table;
-    table-layout: fixed;
-    width: 100%;
-    white-space: nowrap;
+body {
+    background-color: #E8E8E8;
 }
 
-.post > * {
-    display: table-cell;
+.post {
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }

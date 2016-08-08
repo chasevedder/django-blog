@@ -4,15 +4,15 @@
 <div class="container-fluid">
     <div class="col-md-11">
         {% for blog in blogs %}
-            <div class="post">
-                <a href="{% url 'website:post-detail' blog.pk %}">
-                    <h3>
-                        {{ blog.title }} - {{ blog.author }}
-                    </h3>
-                    <h4">
-                        {{ blog.content }}
-                    </h4>
-                </a>
+            <div class="panel panel-default">
+                <div class="post panel-body">
+                    <a href="{% url 'website:post-detail' blog.pk %}">
+                        <h4 style="margin: -5px; margin-left:5px">{{ blog.title }}</h4>
+                    </a>
+                </div>
+                <div class="panel-footer">
+                    <span class="small">Submitted by {{ blog.author.username }}</span>
+                </div>
             </div>
         {% endfor %}
     </div>
