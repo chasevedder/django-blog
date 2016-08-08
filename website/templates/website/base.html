@@ -44,12 +44,12 @@
                 </li>
                 {% else %}
                 <li class="">
-                    <a href="#">
+                    <a href="{% url 'website:register' %}">
                         <span class = "glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Register
                     </a>
                 </li>
                     <li class="">
-                    <a href="#">
+                    <a href="{% url 'website:login' %}">
                         <span class = "glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Sign in
                     </a>
                 </li>
