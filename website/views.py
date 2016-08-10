@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.contrib.auth import logout, authenticate, login
 from django.utils.crypto import get_random_string
 from django.core.mail import send_mail
@@ -145,3 +146,16 @@ def activate_user(request, activation_code):
 
 def register_success(request):
     return render(request, 'website/account_creation_success.html', {})
+
+
+def upvote(request):
+    post_id = request.POST.get('post_id')
+    vote = request.POST.get('up')
+    post = BlogPost.objects.get(pk=post_id)
+    if vote is None:
+        post.downvotes += 1
+        post.save()
+    else:
+        post.upvotes += 1
+        post.save()
+    return HttpResponse(post.upvotes - post.downvotes)

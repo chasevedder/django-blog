@@ -1,5 +1,60 @@
 {% extends 'website/base.html' %}
 
+{% block head %}
+<script>
+$(document).ready(function() {
+
+    $('img.vote-up').click(function() {
+        var post_id = $(this).attr('id');
+        var idk = $(this);
+
+        if ($(this).hasClass('selected')) {
+            var vote_action = 'recall-vote'
+
+
+
+            console.log('hi');
+            $.post('upvote/', {post_id:post_id, up:'yes'}, function(response) {
+                $('#upvotes-' + post_id).html(response);
+                idk.attr('class', 'vote-up');
+            });
+        } else {
+
+            var vote_action = 'vote'
+            $.post('/upvote/', {post_id: post_id}, function(response) {
+                $('#upvotes-' + post_id).html(response);
+                idk.attr('class', 'vote-up selected');
+            });
+        }
+    });
+
+    $('img.vote-down').click(function() {
+        var post_id = $('img.vote-up').attr('id');
+        var idk = $(this);
+
+        if ($(this).hasClass('selected')) {
+            var vote_action = 'recall-vote'
+
+
+
+            console.log('hi');
+            $.post('upvote/', {post_id:post_id}, function(response) {
+                $('#upvotes-' + post_id).html(response);
+                idk.attr('class', 'vote-up');
+            });
+        } else {
+
+            var vote_action = 'vote'
+            $.post('/upvote/', {post_id: post_id, up:'yes'}, function(response) {
+                $('#upvotes-' + post_id).html(response);
+                idk.attr('class', 'vote-up selected');
+            });
+        }
+    });
+});
+    </script>
+{% endblock %}
+
 {% block body %}
 <div class="container-fluid">
 
@@ -12,27 +67,31 @@
                         <table>
                             <tbody>
                             <tr style="margin-bottom: 10px;">
-                                <td>
-                                <a href="">
-                                    <img src="http://cdn1.the-orbit.net/almostdiamonds/wp-content/uploads/sites/3/2012/05/upvote_sm.png" style="width: 20px; height: 20px">
-                                </a>
-                            </td>
+                                <td align="center">
+                                    {% ifequal thisUserUpVote 0 %}
+                                    <img class="vote-up" id="{{ blog.id }}" src = "http://i.imgur.com/nFn8U6a.png" style="width:20px; height:20px;" title="Vote this thread UP. (click again to undo)" />
+                                    {% else %}
+                                    <img class="vote-up selected" id="{{ blog.id }}" src = "http://i.imgur.com/nFn8U6a.png" style="width:20px; height:20px;" title="Vote this thread UP. (click again to undo)" />
+                                    {% endifequal %}
+                                </td>
                             </tr>
                             <tr>
-                                <td>1234</td>
+                                <td align="center" id="upvotes-{{ blog.id }}">{{ blog.upvotes }}</td>
                             </tr>
                             <tr>
-                                <td style="width:10px">
-                                    <a href="#">
-                                        <img src="https://metrouk2.files.wordpress.com/2014/12/downvote.png" style="width: 20px; height: 20px">
-                                    </a>
+                                <td align="center">
+                                    {% ifequal thisUserDownVote 0 %}
+                                    <img class="vote-down" src = "http://i.imgur.com/Zh8gUCt.png" style="width:20px; height:20px;" title="Vote this thread DOWN if it is innapropriate or incorrect. (click again to undo)" />
+                                    {% else %}
+                                    <img class="vote-down selected" src = "http://i.imgur.com/Zh8gUCt.png" style="width:20px; height:20px;" title="Vote this thread DOWN if it is innapropriate or incorrect. (click again to undo)" />
+                                    {% endifequal %}
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </td>
                     <td>
-                        <div class="panel panel-default">
+                        <div class="panel panel-default" style="margin-top: 20px">
                             <div class="post panel-body">
                                 <a href="{% url 'website:post-detail' blog.pk %}">
                                     <h4 style="margin: -5px; margin-left:5px">{{ blog.title }}</h4>

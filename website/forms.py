@@ -24,3 +24,11 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = MyUser
         fields = ['username', 'email', 'password']
+
+
+class UpvoteForm(forms.ModelForm):
+
+    class Meta:
+        model = BlogPost
+        # exclude = ['author', 'updated', 'created', ]
+        fields = []

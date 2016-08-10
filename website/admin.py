@@ -83,7 +83,7 @@ class CommentInline(admin.StackedInline):
 
 class PostAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,  {'fields': ['title', 'author', 'content']}),
+        (None,  {'fields': ['title', 'author', 'content', 'upvotes', 'downvotes']}),
     ]
     inlines = [CommentInline]
 
