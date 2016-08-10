@@ -2,9 +2,16 @@
 
 {% block body %}
     <div class="container-fluid">
-        <div class="post-detail" style="margin-bottom: 20px">
-            <h1>{{ post.title }}</h1>
-            <span>{{ post.content }}</span>
+        <div class="panel panel-default" style="margin-bottom: 20px; padding-bottom: 0px;">
+            <div class="panel-body">
+                <h3>{{ post.title }}</h3>
+            </div>
+            <div class="panel panel-default" style="margin-top: -20px; margin-bottom: 0px; border-radius: 0px">
+                <div class="panel-body">
+                    <span>{{ post.content }}</span>
+                </div>
+            </div>
+
         </div>
         <h2>Comments</h2> &nbsp;
         <a href="{% url 'website:comment-add' post.pk%}">Add a comment</a>

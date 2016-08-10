@@ -47,11 +47,11 @@ def login_user(request):
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
-            if user.is_active:
+            if user.is_activated:
                 login(request, user)
                 return redirect('website:index')
             else:
-                return render(request, 'website/login.html', {'error_message': 'Your account has been disabled'})
+                return render(request, 'website/login.html', {'error_message': 'You must activate your account before logging in'})
         else:
             return render(request, 'website/login.html', {'error_message': 'Invalid login'})
     return render(request, 'website/login.html')
@@ -62,7 +62,6 @@ def register_user(request):
     if form.is_valid():
         user = form.save(commit=False)
         user.activation_code = generate_activation_url()
-        user.is_active = False
         user.save()
 
         # generate email
@@ -137,9 +136,9 @@ def generate_activation_url():
 def activate_user(request, activation_code):
     try:
         user = MyUser.objects.get(activation_code=activation_code)
-        user.is_active = True
+        user.is_activated = True
         user.save()
-        return redirect('website:login')
+        return render(request, 'website/user_activated.html')
     except MyUser.DoesNotExist:
         return redirect('website:register')
 

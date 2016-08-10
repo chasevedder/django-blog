@@ -2,18 +2,50 @@
 
 {% block body %}
 <div class="container-fluid">
-    <div class="col-md-11">
+
+    <div class="col-sm-12">
         {% for blog in blogs %}
-            <div class="panel panel-default">
-                <div class="post panel-body">
-                    <a href="{% url 'website:post-detail' blog.pk %}">
-                        <h4 style="margin: -5px; margin-left:5px">{{ blog.title }}</h4>
-                    </a>
-                </div>
-                <div class="panel-footer">
-                    <span class="small">Submitted by {{ blog.author.username }}</span>
-                </div>
-            </div>
+            <table class="col-sm-12">
+                <tbody>
+                <tr>
+                    <td style="width:10px;">
+                        <table>
+                            <tbody>
+                            <tr style="margin-bottom: 10px;">
+                                <td>
+                                <a href="">
+                                    <img src="http://cdn1.the-orbit.net/almostdiamonds/wp-content/uploads/sites/3/2012/05/upvote_sm.png" style="width: 20px; height: 20px">
+                                </a>
+                            </td>
+                            </tr>
+                            <tr>
+                                <td>1234</td>
+                            </tr>
+                            <tr>
+                                <td style="width:10px">
+                                    <a href="#">
+                                        <img src="https://metrouk2.files.wordpress.com/2014/12/downvote.png" style="width: 20px; height: 20px">
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td>
+                        <div class="panel panel-default">
+                            <div class="post panel-body">
+                                <a href="{% url 'website:post-detail' blog.pk %}">
+                                    <h4 style="margin: -5px; margin-left:5px">{{ blog.title }}</h4>
+                                </a>
+                            </div>
+                            <div class="panel-footer">
+                                <span class="small">Submitted by {{ blog.author.username }}</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         {% endfor %}
     </div>
 </div>
