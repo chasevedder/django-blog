@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^(?P<post_id>[0-9]+)/comment/$', views.create_comment, name='comment-add'),
     url(r'^(?P<post_id>[0-9]+)/comment/(?P<comment_id>[0-9]+)/reply/$', views.reply_comment, name='comment-reply'),
     url(r'^activate/(?P<activation_code>\w+)/$', views.activate_user, name='user-activate'),
+    url(r'^success/$', views.register_success, name='register-success')
 ]

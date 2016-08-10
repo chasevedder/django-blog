@@ -68,7 +68,7 @@ def register_user(request):
         # generate email
         msg_plain = 'hi'
         msg_html = render_to_string('website/activate.html', {'user': user, 'code': user.activation_code})
-        send_mail('Activate Acount', msg_plain, 'chasevedder@gmail.com', ['chasevedder@gmail.com',], html_message=msg_html)
+        send_mail('Activate Acount', msg_plain, 'chasevedder@gmail.com', [user.email,], html_message=msg_html)
 
         password = request.POST['password2']
         username = user.email
@@ -78,7 +78,7 @@ def register_user(request):
                 login(request, user)
                 return redirect('website:index')
 
-        return redirect('website:login')
+        return redirect('website:register-success')
     context = {
         "form": form,
     }
@@ -142,3 +142,7 @@ def activate_user(request, activation_code):
         return redirect('website:login')
     except MyUser.DoesNotExist:
         return redirect('website:register')
+
+
+def register_success(request):
+    return render(request, 'website/account_creation_success.html', {})

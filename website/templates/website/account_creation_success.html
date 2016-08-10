@@ -1,0 +1,9 @@
+{% extends 'website/base.html' %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1>Success!</h1>
+    <h4>Check your email for an activation link.</h4>
+    <a href="{% url 'website:login' %}">Click here to login</a>
+</div>
+{% endblock %}
