@@ -4,7 +4,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 
 class MyUserManager(BaseUserManager):
-    def create_user(self, email, username, password=None):
+    def create_user(self, email, username, activation_code, password=None):
         """
         Creates and saves a user with the give email and password
         :param email:
@@ -16,14 +16,16 @@ class MyUserManager(BaseUserManager):
         if not username:
             raise ValueError('Users must have a username')
 
-        user = self.model(email=self.normalize_email(email), username=username)
+        user = self.model(email=self.normalize_email(email), username=username, activation_code=activation_code)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, password):
-        user = self.create_user(email, username, password=password)
+    def create_superuser(self, email, username, activation_code, password):
+        activation_code = 'asdfasdf'
+        user = self.create_user(email, username, activation_code,  password=password)
         user.is_admin = True
+
         user.save(using=self._db)
         return user
 
@@ -39,13 +41,20 @@ class MyUser(AbstractBaseUser):
         max_length=255,
         unique=True
     )
+
+    activation_code = models.CharField(
+        verbose_name='activation code',
+        max_length=32,
+        unique=True
+    )
+
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'activation_code']
 
     def get_full_name(self):
         return self.email

@@ -124,3 +124,10 @@ STATIC_URL = '/static/'
 
 
 AUTH_USER_MODEL = 'customauth.MyUser'
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'in-v3.mailjet.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'b1cc383f2d0c4a77883358dbde609ad2'
+EMAIL_HOST_PASSWORD = '0924780628bc6a20dc9a96d55ab50859'

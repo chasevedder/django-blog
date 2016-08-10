@@ -1,0 +1,18 @@
+<div class="test" style="margin-top: 15px">
+
+    <div class="panel panel-default" style="margin-bottom: -10px">
+        <div class="panel-body">
+            <ul>
+                <li style="margin-left: -30px;list-style: none;">
+                    <span>{{ comment.content }}</span><br>
+                    <span class="small" style="font-size: 10px">{{ comment.author.username }} - <a href="{% url 'website:comment-reply' comment.post.pk comment.pk %}">reply</a> </span>
+                    {% for ch in comment.comment_set.all %}
+                        {% with comment=ch template_name='website/comment_template.html' %}
+                            {% include template_name %}
+                        {% endwith %}
+                    {% endfor %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

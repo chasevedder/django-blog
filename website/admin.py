@@ -5,7 +5,7 @@ from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from customauth.models import MyUser
-from .models import BlogPost
+from .models import BlogPost, Comment
 # Register your models here.
 
 
@@ -58,11 +58,11 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('email', 'username', 'is_admin')
+    list_display = ('email', 'username', 'is_admin', 'is_active')
     list_filter = ('is_admin',)
     fieldsets = (
-        (None, {'fields': ('email', 'username', 'password')}),
-        ('Permissions', {'fields': ('is_admin',)}),
+        (None, {'fields': ('email', 'username', 'password', 'activation_code')}),
+        ('Permissions', {'fields': ('is_admin', 'is_active')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
@@ -76,9 +76,21 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email', 'username',)
     filter_horizontal = ()
 
+
+class CommentInline(admin.StackedInline):
+    model = Comment
+
+
+class PostAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None,  {'fields': ['title', 'author', 'content']}),
+    ]
+    inlines = [CommentInline]
+
 # Now register the new UserAdmin...
 admin.site.register(MyUser, UserAdmin)
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
 admin.site.unregister(Group)
-admin.site.register(BlogPost)
+admin.site.register(BlogPost, PostAdmin)
+admin.site.register(Comment)

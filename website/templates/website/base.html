@@ -31,12 +31,13 @@
 
 
             <ul class="nav navbar-nav navbar-right">
+
+                {% if request.user.is_authenticated %}
                 <li class="">
                     <a href="{% url 'website:post-create' %}">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Post
                     </a>
                 </li>
-                {% if request.user.is_authenticated %}
                 <li class="">
                     <a href="{% url 'website:logout' %}">
                         <span class = "glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout

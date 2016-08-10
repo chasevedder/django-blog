@@ -2,9 +2,16 @@
 
 {% block body %}
     <div class="container-fluid">
-        <div class="post-detail">
+        <div class="post-detail" style="margin-bottom: 20px">
             <h1>{{ post.title }}</h1>
-            <h2>{{ post.content }}</h2>
+            <span>{{ post.content }}</span>
         </div>
+        <h2>Comments</h2> &nbsp;
+        <a href="{% url 'website:comment-add' post.pk%}">Add a comment</a>
+        {% for comment in post.comment_set.all %}
+            {% if not comment.parent %}
+                {% include 'website/comment_template.html' %}
+            {% endif %}
+        {% endfor %}
     </div>
 {% endblock %}
