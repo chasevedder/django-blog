@@ -5,49 +5,52 @@
 $(document).ready(function() {
 
     $('img.vote-up').click(function() {
-        var post_id = $(this).attr('id');
+        var post_id = $(this).attr('id').replace('up-', '');
         var idk = $(this);
+        var vote_type = 'up';
 
         if ($(this).hasClass('selected')) {
-            var vote_action = 'recall-vote'
-
-
-
-            console.log('hi');
-            $.post('upvote/', {post_id:post_id, up:'yes'}, function(response) {
+            var vote_action = 'recall-vote';
+            $.post('upvote/', {post_id:post_id, type:vote_type, action:vote_action}, function(response) {
+                console.log(response);
                 $('#upvotes-' + post_id).html(response);
-                idk.attr('class', 'vote-up');
+                $('#up-' + post_id).attr('class', 'vote-up');
             });
         } else {
 
-            var vote_action = 'vote'
-            $.post('/upvote/', {post_id: post_id}, function(response) {
+            var vote_action = 'vote';
+            $.post('/upvote/', {post_id:post_id, type:vote_type, action:vote_action}, function(response) {
+                console.log(response);
                 $('#upvotes-' + post_id).html(response);
-                idk.attr('class', 'vote-up selected');
+                $('#up-' + post_id).attr('class', 'vote-up selected');
+                $('#down-' + post_id).attr('class', 'vote-down');
+                var style = $('#up-' + post_id).attr('style')
+                $('#up-' + post_id).attr('style', style + 'background-color: green;');
             });
         }
     });
 
     $('img.vote-down').click(function() {
-        var post_id = $('img.vote-up').attr('id');
+        var post_id = $(this).attr('id').replace('down-', '');
         var idk = $(this);
+        var vote_type = 'down';
 
         if ($(this).hasClass('selected')) {
-            var vote_action = 'recall-vote'
-
-
-
-            console.log('hi');
-            $.post('upvote/', {post_id:post_id}, function(response) {
+            var vote_action = 'recall-vote';
+            $.post('upvote/', {post_id:post_id, type:vote_type, action:vote_action}, function(response) {
                 $('#upvotes-' + post_id).html(response);
-                idk.attr('class', 'vote-up');
+                $('#down-' + post_id).attr('class', 'vote-down');
             });
         } else {
 
-            var vote_action = 'vote'
-            $.post('/upvote/', {post_id: post_id, up:'yes'}, function(response) {
+            var vote_action = 'vote';
+            $.post('/upvote/', {post_id:post_id, type:vote_type, action:vote_action}, function(response) {
+                console.log(response);
                 $('#upvotes-' + post_id).html(response);
-                idk.attr('class', 'vote-up selected');
+                $('#up-' + post_id).attr('class', 'vote-up');
+                $('#down-' + post_id).attr('class', 'vote-down selected');
+                var style = $('#down-' + post_id).attr('style')
+                $('#down-' + post_id).attr('style', style + 'background-color: green');
             });
         }
     });
@@ -65,26 +68,21 @@ $(document).ready(function() {
                 <tr>
                     <td style="width:10px;">
                         <table>
-                            <tbody>
+                            <tbody id="post-{{ blog.id }}">
                             <tr style="margin-bottom: 10px;">
                                 <td align="center">
-                                    {% ifequal thisUserUpVote 0 %}
-                                    <img class="vote-up" id="{{ blog.id }}" src = "http://i.imgur.com/nFn8U6a.png" style="width:20px; height:20px;" title="Vote this thread UP. (click again to undo)" />
-                                    {% else %}
-                                    <img class="vote-up selected" id="{{ blog.id }}" src = "http://i.imgur.com/nFn8U6a.png" style="width:20px; height:20px;" title="Vote this thread UP. (click again to undo)" />
-                                    {% endifequal %}
+                                    <img class="vote-up" id="up-{{ blog.id }}" src = "http://i.imgur.com/nFn8U6a.png" style="width:20px; height:20px;" title="Vote this thread UP. (click again to undo)" />
+
+
                                 </td>
                             </tr>
                             <tr>
-                                <td align="center" id="upvotes-{{ blog.id }}">{{ blog.upvotes }}</td>
+                                <td align="center" id="upvotes-{{ blog.id }}">{{ blog.score }}</td>
                             </tr>
                             <tr>
                                 <td align="center">
-                                    {% ifequal thisUserDownVote 0 %}
-                                    <img class="vote-down" src = "http://i.imgur.com/Zh8gUCt.png" style="width:20px; height:20px;" title="Vote this thread DOWN if it is innapropriate or incorrect. (click again to undo)" />
-                                    {% else %}
-                                    <img class="vote-down selected" src = "http://i.imgur.com/Zh8gUCt.png" style="width:20px; height:20px;" title="Vote this thread DOWN if it is innapropriate or incorrect. (click again to undo)" />
-                                    {% endifequal %}
+                                    <img class="vote-down" id="down-{{ blog.id }}" src = "http://i.imgur.com/Zh8gUCt.png" style="width:20px; height:20px;" title="Vote this thread DOWN if it is innapropriate or incorrect. (click again to undo)" />
+
                                 </td>
                             </tr>
                             </tbody>

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import logout, authenticate, login
 from django.utils.crypto import get_random_string
@@ -9,6 +9,7 @@ from .models import BlogPost, Comment
 from .forms import PostForm, CommentForm
 from .admin import UserCreationForm
 from customauth.models import MyUser
+
 
 
 # Create your views here.
@@ -150,12 +151,32 @@ def register_success(request):
 
 def upvote(request):
     post_id = request.POST.get('post_id')
-    vote = request.POST.get('up')
-    post = BlogPost.objects.get(pk=post_id)
-    if vote is None:
-        post.downvotes += 1
-        post.save()
+    vote_type = request.POST.get('type')
+    action = request.POST.get('action')
+
+    post = get_object_or_404(BlogPost, pk=post_id)
+
+    upvotes = post.upvotes.filter(id=request.user.id).count()
+    downvotes = post.downvotes.filter(id=request.user.id).count()
+
+    if action == 'vote':
+            if vote_type == 'up':
+                post.upvotes.add(request.user)
+                post.downvotes.remove(request.user)
+            elif vote_type == 'down':
+                post.upvotes.remove(request.user)
+                post.downvotes.add(request.user)
+            else:
+                return HttpResponse('500 - unknown vote type' + vote_type)
+    elif action == 'recall-vote':
+        if vote_type == 'up':
+            post.upvotes.remove(request.user)
+        elif vote_type == 'down':
+            post.downvotes.remove(request.user)
+        else:
+            return HttpResponse('500 - unknown vote type or no vote to recall' + vote_type)
     else:
-        post.upvotes += 1
-        post.save()
-    return HttpResponse(post.upvotes - post.downvotes)
+        return HttpResponse('500 - bad action')
+    post.score = post.upvotes.count() - post.downvotes.count()
+    post.save()
+    return HttpResponse(post.score)

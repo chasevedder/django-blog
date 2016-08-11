@@ -7,8 +7,9 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(MyUser)
     content = models.TextField(max_length=10000)
-    upvotes = models.IntegerField(default=0)
-    downvotes = models.IntegerField(default=0)
+    upvotes = models.ManyToManyField(MyUser, blank=True, related_name='postUpvotes')
+    downvotes = models.ManyToManyField(MyUser, blank=True, related_name='postDownvotes')
+    score = models.IntegerField(default=0)
 
     def __str__(self):
         return self.author.get_full_name() + " - " + self.title
